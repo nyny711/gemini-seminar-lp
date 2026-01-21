@@ -14,6 +14,46 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
+// セミナー情報の定義
+const seminars = [
+  {
+    id: "vol1",
+    title: "「商談時間」を最大化する",
+    subtitle: "～非コア業務をAIで自動化し、顧客に向き合う～",
+    date: "2026年2月3日(火)",
+    time: "14:00～15:00",
+    image: "/seminar-vol1.png",
+    description: "日報・見積・技術照会...その事務作業、AIなら一瞬です。営業マンを「本来の仕事」に集中させる具体的メソッドを解説！"
+  },
+  {
+    id: "vol2",
+    title: "「売上」を最大化する",
+    subtitle: "～売上改善に直結するAI活用方法～",
+    date: "2026年2月10日(火)",
+    time: "14:00～15:00",
+    image: "/seminar-vol2.png",
+    description: "帳社後の日報入力や図面確認の手順を削減。最新AIツールを活用して、製造業の思惑い営業スタイルを変革しましょう！"
+  },
+  {
+    id: "vol3",
+    title: "「売る」以外は、AIに任せる",
+    subtitle: "～営業工数の6割を占める「事務作業」ゼロ化計画～",
+    date: "2026年2月17日(火)",
+    time: "14:00～15:00",
+    image: "/seminar-vol3.png",
+    description: "帳社後の日報入力や図面確認の手順を削減。最新AIツールを活用して、製造業の営業スタイルを変革しましょう！"
+  },
+  {
+    id: "vol4",
+    title: "AIと働く、次世代の営業組織",
+    subtitle: "～生成AIによる自動化から、売上拡大戦略まで～",
+    date: "2026年2月24日(火)",
+    time: "14:00～15:00",
+    image: "/seminar-vol4.png",
+    description: "非コア業務はAIが自動処理し、人間は高付加価値な接客へ。成功企業が実践している「製造業特化」のAI活用術を公開！"
+  }
+];
+
 export default function Home() {
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
@@ -26,6 +66,7 @@ export default function Home() {
     email: "",
     phone: "",
     challenge: "",
+    selectedSeminars: [] as string[], // 複数選択対応
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,6 +81,19 @@ export default function Home() {
     }
   };
 
+  const handleSeminarToggle = (seminarId: string) => {
+    setFormData(prev => {
+      const isSelected = prev.selectedSeminars.includes(seminarId);
+      const newSelected = isSelected
+        ? prev.selectedSeminars.filter(id => id !== seminarId)
+        : [...prev.selectedSeminars, seminarId];
+      return { ...prev, selectedSeminars: newSelected };
+    });
+    if (formErrors.selectedSeminars) {
+      setFormErrors(prev => ({ ...prev, selectedSeminars: "" }));
+    }
+  };
+
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
     if (!formData.company.trim()) errors.company = "会社名は必須です";
@@ -48,6 +102,7 @@ export default function Home() {
     if (!formData.email.trim()) errors.email = "メールアドレスは必須です";
     if (!formData.email.includes("@")) errors.email = "有効なメールアドレスを入力してください";
     if (!formData.phone.trim()) errors.phone = "電話番号は必須です";
+    if (formData.selectedSeminars.length === 0) errors.selectedSeminars = "少なくとも1つのセミナーを選択してください";
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -65,6 +120,7 @@ export default function Home() {
         email: formData.email,
         phone: formData.phone,
         challenge: formData.challenge,
+        selectedSeminars: formData.selectedSeminars,
       });
 
       if (result.success) {
@@ -76,6 +132,7 @@ export default function Home() {
           email: "",
           phone: "",
           challenge: "",
+          selectedSeminars: [],
         });
       } else {
         toast.error("申し込み処理中にエラーが発生しました。もう一度お試しください。");
@@ -130,7 +187,7 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="max-w-3xl"
+            className="max-w-4xl mx-auto text-center"
           >
             <motion.div variants={fadeIn} className="mb-6">
               <Badge variant="outline" className="text-cyan-400 border-cyan-400/50 px-4 py-1 text-sm font-mono tracking-wider bg-cyan-950/30 backdrop-blur-sm">
@@ -139,41 +196,89 @@ export default function Home() {
             </motion.div>
             
             <motion.div variants={fadeIn} className="mb-4">
-              <p className="text-cyan-400 text-sm font-medium">製造業DXウェビナー 営業改革シリーズ VOL.1</p>
+              <p className="text-cyan-400 text-sm font-medium">製造業DXウェビナー 営業改革シリーズ 全4回</p>
             </motion.div>
             
-            <motion.div variants={fadeIn} className="mb-8 flex items-center justify-start gap-3">
+            <motion.div variants={fadeIn} className="mb-8 flex items-center justify-center gap-3">
               <div className="h-1 w-8 bg-gradient-to-r from-transparent to-cyan-400" />
-              <span className="text-cyan-400 font-bold text-3xl">参加無料</span>
+              <span className="text-cyan-400 font-bold text-3xl">全回参加無料</span>
               <div className="h-1 w-8 bg-gradient-to-l from-transparent to-cyan-400" />
             </motion.div>
             
-            <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-bold leading-tight mb-6 tracking-tight">
-              「商談時間」を<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">最大化する</span>
+            <motion.h1 variants={fadeIn} className="text-3xl md:text-5xl font-bold leading-tight mb-6 tracking-tight">
+              製造業の営業を<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">AIで変革する</span>
             </motion.h1>
             
-            <motion.p variants={fadeIn} className="text-xl md:text-2xl text-slate-300 mb-8 font-light leading-relaxed border-l-4 border-cyan-500 pl-6">
-              ～非コア業務をAIで自動化し、顧客に向き合う～<br />
-              日報・見積・技術照会...その事務作業、AIなら一瞬です。<br />
-              営業マンを<span className="text-white font-medium">「本来の仕事」</span>に集中させる具体的メソッドを解説！
+            <motion.p variants={fadeIn} className="text-lg md:text-xl text-slate-300 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
+              日報・見積・技術照会などの非コア業務をAIで自動化し、<br />
+              営業マンを「本来の仕事」に集中させる具体的メソッドを全4回で解説！
             </motion.p>
             
-            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4 items-start">
-              <Button size="lg" className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-6 text-lg shadow-[0_0_20px_rgba(8,145,178,0.4)] transition-all hover:scale-105" onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}>
-                無料で参加する <ArrowRight className="ml-2 h-5 w-5" />
+            <motion.div variants={fadeIn}>
+              <Button size="lg" className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-6 text-lg shadow-[0_0_20px_rgba(8,145,178,0.4)] transition-all hover:scale-105" onClick={() => document.getElementById('seminars')?.scrollIntoView({ behavior: 'smooth' })}>
+                セミナー詳細を見る <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-slate-300 text-base px-4 py-2 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
-                  <Clock className="h-5 w-5 text-cyan-400" />
-                  <span className="font-medium">2026年2月1日(木) 14:00～15:00</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-400 text-sm px-4 py-2 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
-                  <span>オンライン開催（途中参加&退出OK）</span>
-                </div>
-              </div>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Seminars Section */}
+      <section id="seminars" className="py-20 bg-white">
+        <div className="container px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">セミナーラインナップ</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              全4回のシリーズで、製造業の営業DXを段階的に学べます。<br />
+              気になる回だけの参加も、全回参加も大歓迎です。
+            </p>
+            <div className="w-20 h-1 bg-cyan-600 mx-auto mt-6" />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {seminars.map((seminar, index) => (
+              <motion.div
+                key={seminar.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group"
+              >
+                <Card className="overflow-hidden border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
+                  <div className="relative h-48 overflow-hidden bg-slate-100">
+                    <img 
+                      src={seminar.image} 
+                      alt={seminar.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-cyan-600 text-white font-bold">
+                        {seminar.id.toUpperCase()}
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{seminar.title}</h3>
+                    <p className="text-sm text-cyan-600 font-medium mb-4">{seminar.subtitle}</p>
+                    <p className="text-sm text-slate-600 mb-4 leading-relaxed">{seminar.description}</p>
+                    <div className="flex items-center gap-2 text-slate-700 text-sm mb-2">
+                      <Clock className="h-4 w-4 text-cyan-600" />
+                      <span className="font-medium">{seminar.date} {seminar.time}</span>
+                    </div>
+                    <p className="text-xs text-slate-500">オンライン開催（途中参加&退出OK）</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Button size="lg" className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-6 text-lg" onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}>
+              今すぐ申し込む（無料） <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -241,30 +346,32 @@ export default function Home() {
               transition={{ delay: 0 }}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <Card className="relative h-full border-2 border-slate-200 hover:border-cyan-500 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-cyan-500/10 to-transparent rounded-bl-full" />
-                <CardHeader className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="bg-blue-100 p-4 rounded-xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                      <FileText className="h-8 w-8" />
+              <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
+                <CardHeader className="bg-gradient-to-br from-cyan-50 to-blue-50 pb-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 bg-cyan-600 text-white rounded-lg p-3">
+                      <Search className="h-6 w-6" />
                     </div>
-                    <div className="text-4xl font-bold text-slate-200 group-hover:text-cyan-500 transition-colors">01</div>
+                    <div className="flex-1">
+                      <CardTitle className="text-xl mb-2 text-slate-900">専門知識の整理・要約</CardTitle>
+                      <p className="text-sm text-slate-600 font-normal">膨大な技術資料を瞬時に検索・要約</p>
+                    </div>
                   </div>
-                  <CardTitle className="text-xl text-slate-900">専門知識の整理・要約をAIでサポート</CardTitle>
                 </CardHeader>
-                <CardContent className="relative z-10">
-                  <p className="text-slate-600 mb-4 leading-relaxed">
-                    製品仕様や技術情報を、わかりやすく整理・要約する方法を紹介。営業担当でも「その場で答えられる」状態を作ります。
+                <CardContent className="pt-6">
+                  <p className="text-slate-700 leading-relaxed mb-4">
+                    製品仕様書、過去の提案資料、技術マニュアルなど、社内に散在する情報を一元管理し、
+                    必要な情報を瞬時に引き出す方法を学びます。
                   </p>
-                  <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded text-sm text-slate-700">
-                    ✓ 技術仕様を顧客向けに粗い描描に変換
+                  <div className="flex items-start gap-2 text-sm text-slate-600">
+                    <CheckCircle2 className="h-5 w-5 text-cyan-600 flex-shrink-0 mt-0.5" />
+                    <span>顧客からの技術的な質問に即座に対応できるようになります</span>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Card 2: 営業事務作業の効率化 */}
+            {/* Card 2: 提案資料の自動生成 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -272,30 +379,32 @@ export default function Home() {
               transition={{ delay: 0.1 }}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <Card className="relative h-full border-2 border-slate-200 hover:border-purple-500 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-500/10 to-transparent rounded-bl-full" />
-                <CardHeader className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="bg-purple-100 p-4 rounded-xl text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
-                      <BrainCircuit className="h-8 w-8" />
+              <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
+                <CardHeader className="bg-gradient-to-br from-blue-50 to-indigo-50 pb-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 bg-blue-600 text-white rounded-lg p-3">
+                      <FileText className="h-6 w-6" />
                     </div>
-                    <div className="text-4xl font-bold text-slate-200 group-hover:text-purple-500 transition-colors">02</div>
+                    <div className="flex-1">
+                      <CardTitle className="text-xl mb-2 text-slate-900">提案資料の自動生成</CardTitle>
+                      <p className="text-sm text-slate-600 font-normal">顧客ごとにカスタマイズされた提案書を短時間で作成</p>
+                    </div>
                   </div>
-                  <CardTitle className="text-xl text-slate-900">営業事務作業の効率化</CardTitle>
                 </CardHeader>
-                <CardContent className="relative z-10">
-                  <p className="text-slate-600 mb-4 leading-relaxed">
-                    議事録作成、メール文作成、報告書・CRM入力の下書がGeminiで自動化される具体例を解説します。
+                <CardContent className="pt-6">
+                  <p className="text-slate-700 leading-relaxed mb-4">
+                    顧客情報と製品データを組み合わせて、説得力のある提案資料を自動生成。
+                    営業担当者は戦略立案に集中できます。
                   </p>
-                  <div className="bg-purple-50 border-l-4 border-purple-500 p-3 rounded text-sm text-slate-700">
-                    ✓ 打合せ記録を瞬時に自動化
+                  <div className="flex items-start gap-2 text-sm text-slate-600">
+                    <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span>提案準備時間を70%削減し、商談数を増やせます</span>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Card 3: 知識の見える化・標準化 */}
+            {/* Card 3: 競合分析の自動化 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -303,30 +412,32 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <Card className="relative h-full border-2 border-slate-200 hover:border-emerald-500 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/10 to-transparent rounded-bl-full" />
-                <CardHeader className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="bg-emerald-100 p-4 rounded-xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
-                      <Search className="h-8 w-8" />
+              <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
+                <CardHeader className="bg-gradient-to-br from-indigo-50 to-purple-50 pb-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 bg-indigo-600 text-white rounded-lg p-3">
+                      <BarChart3 className="h-6 w-6" />
                     </div>
-                    <div className="text-4xl font-bold text-slate-200 group-hover:text-emerald-500 transition-colors">03</div>
+                    <div className="flex-1">
+                      <CardTitle className="text-xl mb-2 text-slate-900">競合分析の自動化</CardTitle>
+                      <p className="text-sm text-slate-600 font-normal">市場動向と競合情報を常に最新の状態で把握</p>
+                    </div>
                   </div>
-                  <CardTitle className="text-xl text-slate-900">知識の見える化・標準化</CardTitle>
                 </CardHeader>
-                <CardContent className="relative z-10">
-                  <p className="text-slate-600 mb-4 leading-relaxed">
-                    ベテランのノウハウをAIに整理させ、チームで共有できる形にする方法を学びます。
+                <CardContent className="pt-6">
+                  <p className="text-slate-700 leading-relaxed mb-4">
+                    競合他社の製品情報、価格動向、市場シェアなどを自動収集・分析。
+                    営業戦略の立案に必要なインサイトを提供します。
                   </p>
-                  <div className="bg-emerald-50 border-l-4 border-emerald-500 p-3 rounded text-sm text-slate-700">
-                    ✓ 属人化を解消し、チーム全体の力を引き出す
+                  <div className="flex items-start gap-2 text-sm text-slate-600">
+                    <CheckCircle2 className="h-5 w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
+                    <span>データに基づいた戦略的な営業活動が可能になります</span>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Card 4: 小さく始める業務改善 */}
+            {/* Card 4: 顧客対応の高度化 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -334,177 +445,90 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <Card className="relative h-full border-2 border-slate-200 hover:border-orange-500 transition-all duration-300 overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-orange-500/10 to-transparent rounded-bl-full" />
-                <CardHeader className="relative z-10">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="bg-orange-100 p-4 rounded-xl text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
-                      <BarChart3 className="h-8 w-8" />
+              <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
+                <CardHeader className="bg-gradient-to-br from-purple-50 to-pink-50 pb-8">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 bg-purple-600 text-white rounded-lg p-3">
+                      <BrainCircuit className="h-6 w-6" />
                     </div>
-                    <div className="text-4xl font-bold text-slate-200 group-hover:text-orange-500 transition-colors">04</div>
+                    <div className="flex-1">
+                      <CardTitle className="text-xl mb-2 text-slate-900">顧客対応の高度化</CardTitle>
+                      <p className="text-sm text-slate-600 font-normal">AIアシスタントで24時間体制の顧客サポートを実現</p>
+                    </div>
                   </div>
-                  <CardTitle className="text-xl text-slate-900">小さく始める業務改善のヒント</CardTitle>
                 </CardHeader>
-                <CardContent className="relative z-10">
-                  <p className="text-slate-600 mb-4 leading-relaxed">
-                    いきなり大規模なDXではなく、営業業務の一部から始める現実的な改善例を紹介します。
+                <CardContent className="pt-6">
+                  <p className="text-slate-700 leading-relaxed mb-4">
+                    よくある質問への自動応答、問い合わせ内容の分類・優先順位付けなど、
+                    顧客対応業務を効率化します。
                   </p>
-                  <div className="bg-orange-50 border-l-4 border-orange-500 p-3 rounded text-sm text-slate-700">
-                    ✓ 今日から実践できる具体的な例
+                  <div className="flex items-start gap-2 text-sm text-slate-600">
+                    <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                    <span>顧客満足度向上と営業工数削減を同時に実現できます</span>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
           </div>
-
-          {/* Bottom CTA */}
-          <div className="mt-16 text-center">
-            <p className="text-slate-600 text-lg mb-6">
-              これら4つのスキルを組み合わせることで、営業プロセス全体の効率化が実現します。
-            </p>
-            <div className="inline-block bg-gradient-to-r from-cyan-50 to-blue-50 border-2 border-cyan-200 px-8 py-4 rounded-xl">
-              <p className="text-slate-900 font-bold text-lg">
-                セミナーでは、実際のプロンプト例と使用例を<br className="md:hidden" />
-                <span className="text-cyan-600">デモンストレーション</span>します。
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* Manufacturing Focus Section */}
-      <section className="py-20 bg-white">
-        <div className="container px-4">
-          <div className="text-center mb-16">
-            <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-200">Industry Focus</Badge>
-            <h2 className="text-3xl font-bold text-slate-900">製造業営業に特化した活用ポイント</h2>
-            <p className="mt-4 text-slate-600 max-w-2xl mx-auto">
-              「汎用的なAI研修」ではありません。製造業ならではの課題に対応した、実践的な活用例をご紹介します。
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="bg-slate-50 border-none shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-800">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                  技術説明の言語化
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600">
-                  複雑な技術仕様や製品スペックを、非技術者の顧客にも伝わるわかりやすい言葉に自動変換。
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-slate-50 border-none shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-800">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                  専門用語の噛み砕き
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600">
-                  業界特有の専門用語を、提案先の業界や職種に合わせて適切な表現に調整した提案文を作成。
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-slate-50 border-none shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-800">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                  現場視点のヒアリング
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600">
-                  製造現場の課題を深掘りするための、具体的で鋭いヒアリング項目リストを瞬時に生成。
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-slate-50 border-none shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-800">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                  業界特化の競合分析
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600">
-                  ニッチな市場や特定の技術領域における競合製品の比較表や差別化ポイントを整理。
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Agenda Section */}
-      <section className="py-20 bg-slate-100">
+      {/* FAQ Section */}
+      <section className="py-20 bg-slate-50">
         <div className="container px-4 max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">セミナー内容（アジェンダ）</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">よくある質問</h2>
           
-          <div className="bg-white rounded-xl shadow-lg p-8 border border-slate-200">
-            <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-              {[
-                { time: "Part 1", title: "営業プロセス別の活用例", desc: "調査・準備・提案・フォローの各フェーズでのGemini実演" },
-                { time: "Part 2", title: "製造業営業での活用ポイント", desc: "業界特有の課題解決に向けたプロンプト活用術" },
-                { time: "Part 3", title: "質疑応答", desc: "皆様の疑問にその場でお答えします" }
-              ].map((item, index) => (
-                <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-cyan-500 text-slate-500 group-[.is-active]:text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                    <span className="font-bold text-sm">{index + 1}</span>
-                  </div>
-                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-slate-50 shadow-sm">
-                    <div className="flex items-center justify-between space-x-2 mb-1">
-                      <div className="font-bold text-slate-900">{item.title}</div>
-                    </div>
-                    <div className="text-slate-500 text-sm">{item.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 text-center pt-6 border-t border-slate-100">
-              <p className="text-slate-600 font-medium">実務にすぐ活かせる内容のみを厳選しています。</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          <Accordion type="single" collapsible className="space-y-4">
+            <AccordionItem value="item-1" className="bg-white border-2 border-slate-200 rounded-lg px-6">
+              <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-cyan-600">
+                AIの知識がなくても参加できますか？
+              </AccordionTrigger>
+              <AccordionContent className="text-slate-600 leading-relaxed">
+                はい、問題ありません。本セミナーは、AI初心者の方でも理解できるよう、
+                基礎から丁寧に解説します。専門用語も分かりやすく説明しますので、安心してご参加ください。
+              </AccordionContent>
+            </AccordionItem>
 
-      {/* Instructor Section */}
-      <section className="py-20 bg-white">
-        <div className="container px-4 max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">登壇者</h2>
-          
-          <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-lg p-8 border border-slate-200">
-            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-              <div className="flex-shrink-0">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
-                  佐藤
-                </div>
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">佐藤 正徳</h3>
-                <p className="text-cyan-600 font-medium mb-4">AI活用コーディネーター</p>
-                <div className="text-slate-600 leading-relaxed space-y-3">
-                  <p>
-                    製造業の営業現場でのAI活用を専門とするコンサルタント。
-                    多数の製造業企業におけるAI導入支援の実績を持ち、
-                    特に営業プロセスの効率化と生産性向上において高い評価を得ている。
-                  </p>
-                  <p>
-                    「実務ですぐに使える」をモットーに、
-                    現場視点での具体的な活用方法をわかりやすく解説するスタイルが特徴。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+            <AccordionItem value="item-2" className="bg-white border-2 border-slate-200 rounded-lg px-6">
+              <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-cyan-600">
+                途中参加・途中退出は可能ですか？
+              </AccordionTrigger>
+              <AccordionContent className="text-slate-600 leading-relaxed">
+                はい、可能です。業務の都合で全時間参加できない場合でも、
+                途中参加・途中退出は自由です。お気軽にご参加ください。
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3" className="bg-white border-2 border-slate-200 rounded-lg px-6">
+              <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-cyan-600">
+                資料は配布されますか？
+              </AccordionTrigger>
+              <AccordionContent className="text-slate-600 leading-relaxed">
+                はい、セミナー終了後に参加者の皆様へ資料をメールでお送りします。
+                復習や社内共有にご活用ください。
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4" className="bg-white border-2 border-slate-200 rounded-lg px-6">
+              <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-cyan-600">
+                複数名での参加は可能ですか？
+              </AccordionTrigger>
+              <AccordionContent className="text-slate-600 leading-relaxed">
+                はい、可能です。複数名でご参加いただく場合は、お手数ですが
+                お一人ずつ申し込みフォームからご登録ください。
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-5" className="bg-white border-2 border-slate-200 rounded-lg px-6">
+              <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-cyan-600">
+                録画視聴は可能ですか？
+              </AccordionTrigger>
+              <AccordionContent className="text-slate-600 leading-relaxed">
+                申し訳ございませんが、本セミナーは録画配信の予定はございません。
+                リアルタイムでのご参加をお願いいたします。
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 
@@ -549,7 +573,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">日時・所要時間</h3>
-                <p className="text-slate-600">2026年2月1日(木) 14:00～15:00<br />約60分</p>
+                <p className="text-slate-600">毎週火曜日 14:00～15:00<br />約60分（全4回）</p>
               </div>
             </div>
             
@@ -569,7 +593,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">参加費</h3>
-                <p className="text-slate-600 font-bold text-lg">無料</p>
+                <p className="text-slate-600 font-bold text-lg">無料（全回）</p>
               </div>
             </div>
           </div>
@@ -594,6 +618,30 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={handleSubmit}>
+                <div className="space-y-3">
+                  <label className="text-sm font-medium text-slate-300 block">参加希望セミナー <span className="text-red-500">*</span></label>
+                  <div className="space-y-2">
+                    {seminars.map((seminar) => (
+                      <label 
+                        key={seminar.id}
+                        className="flex items-start gap-3 p-3 bg-slate-800/50 border border-slate-600 rounded-md cursor-pointer hover:bg-slate-800/70 transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.selectedSeminars.includes(seminar.id)}
+                          onChange={() => handleSeminarToggle(seminar.id)}
+                          className="mt-1 h-4 w-4 rounded border-slate-500 text-cyan-600 focus:ring-cyan-500 focus:ring-offset-0 bg-slate-700"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-white text-sm">{seminar.id.toUpperCase()}: {seminar.title}</div>
+                          <div className="text-xs text-slate-400 mt-1">{seminar.date} {seminar.time}</div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  {formErrors.selectedSeminars && <p className="text-red-400 text-xs">{formErrors.selectedSeminars}</p>}
+                </div>
+
                 <div className="space-y-2">
                   <label htmlFor="company" className="text-sm font-medium text-slate-300">会社名 <span className="text-red-500">*</span></label>
                   <input 

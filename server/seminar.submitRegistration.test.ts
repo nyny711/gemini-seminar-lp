@@ -29,6 +29,7 @@ describe("seminar.submitRegistration", () => {
       email: "yamada@example.com",
       phone: "090-1234-5678",
       challenge: "提案準備に時間がかかる",
+      selectedSeminars: ["vol1", "vol2"],
     });
 
     expect(result.success).toBe(true);
@@ -46,6 +47,7 @@ describe("seminar.submitRegistration", () => {
         position: "営業部長",
         email: "yamada@example.com",
         phone: "090-1234-5678",
+        selectedSeminars: ["vol1"],
       });
       expect.fail("Should have thrown validation error");
     } catch (error: any) {
@@ -64,6 +66,7 @@ describe("seminar.submitRegistration", () => {
         position: "営業部長",
         email: "invalid-email",
         phone: "090-1234-5678",
+        selectedSeminars: ["vol1"],
       });
       expect.fail("Should have thrown validation error");
     } catch (error: any) {
@@ -81,6 +84,7 @@ describe("seminar.submitRegistration", () => {
       position: "営業部長",
       email: "yamada@example.com",
       phone: "090-1234-5678",
+      selectedSeminars: ["vol1"],
     });
 
     expect(result.success).toBe(true);

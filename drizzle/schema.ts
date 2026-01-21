@@ -32,9 +32,11 @@ export const seminarRegistrations = mysqlTable("seminar_registrations", {
   id: int("id").autoincrement().primaryKey(),
   companyName: varchar("companyName", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
+  position: varchar("position", { length: 255 }).notNull(),
   email: varchar("email", { length: 320 }).notNull(),
-  phone: varchar("phone", { length: 20 }),
-  message: text("message"),
+  phone: varchar("phone", { length: 20 }).notNull(),
+  challenge: text("challenge"),
+  selectedSeminars: text("selectedSeminars").notNull(), // JSON array of seminar IDs
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

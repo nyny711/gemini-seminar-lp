@@ -36,6 +36,7 @@ describe("seminar.submitRegistration", () => {
       email: "test@example.com",
       phone: "03-1234-5678",
       challenge: "営業プロセスの効率化",
+      selectedSeminars: ["vol1", "vol2"],
     };
 
     const result = await caller.seminar.submitRegistration(input);
@@ -56,6 +57,7 @@ describe("seminar.submitRegistration", () => {
       position: "営業部長",
       email: "test@example.com",
       phone: "03-1234-5678",
+      selectedSeminars: ["vol1"],
     };
 
     const result = await caller.seminar.submitRegistration(input);
