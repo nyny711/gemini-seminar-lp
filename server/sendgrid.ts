@@ -34,7 +34,7 @@ export async function sendEmail(params: SendEmailParams): Promise<boolean> {
 
     const msg = {
       to: params.to,
-      from: process.env.SENDGRID_FROM_EMAIL || 'noreply@manus.space',
+      from: process.env.SENDGRID_FROM_EMAIL || 'noreply@anyenv-inc.com',
       subject: params.subject,
       text: params.text,
       html: params.html || params.text,
