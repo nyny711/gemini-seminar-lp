@@ -707,8 +707,8 @@ export default function Home() {
             <div>
               <h3 className="font-bold text-white mb-4">お問い合わせ</h3>
               <p className="text-sm text-slate-300 break-all">
-                <a href="mailto:info@anyenv.co.jp" className="text-cyan-400 hover:text-cyan-300 transition-colors">
-                  info@anyenv.co.jp
+                <a href="mailto:info@anyenv-inc.com" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+                  info@anyenv-inc.com
                 </a>
               </p>
             </div>
