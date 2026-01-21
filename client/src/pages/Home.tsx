@@ -134,34 +134,43 @@ export default function Home() {
           >
             <motion.div variants={fadeIn} className="mb-6">
               <Badge variant="outline" className="text-cyan-400 border-cyan-400/50 px-4 py-1 text-sm font-mono tracking-wider bg-cyan-950/30 backdrop-blur-sm">
-                無料オンラインセミナー（60分）
+                anyenv株式会社主催ウェビナー
               </Badge>
+            </motion.div>
+            
+            <motion.div variants={fadeIn} className="mb-4">
+              <p className="text-cyan-400 text-sm font-medium">製造業DXウェビナー 営業改革シリーズ VOL.1</p>
             </motion.div>
             
             <motion.div variants={fadeIn} className="mb-8 flex items-center justify-start gap-3">
               <div className="h-1 w-8 bg-gradient-to-r from-transparent to-cyan-400" />
-              <span className="text-cyan-400 font-bold text-5xl">完全無料</span>
+              <span className="text-cyan-400 font-bold text-3xl">参加無料</span>
               <div className="h-1 w-8 bg-gradient-to-l from-transparent to-cyan-400" />
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-bold leading-tight mb-6 tracking-tight">
-              製造業営業のための<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Gemini活用</span>セミナー
+              「商談時間」を<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">最大化する</span>
             </motion.h1>
             
             <motion.p variants={fadeIn} className="text-xl md:text-2xl text-slate-300 mb-8 font-light leading-relaxed border-l-4 border-cyan-500 pl-6">
-              調査・準備・提案・フォローまで。<br />
-              営業プロセスを<span className="text-white font-medium">"AIで高速化"</span>する実践ノウハウを<br className="hidden md:block" />
-              1時間で解説します。
+              ～非コア業務をAIで自動化し、顧客に向き合う～<br />
+              日報・見積・技術照会...その事務作業、AIなら一瞬です。<br />
+              営業マンを<span className="text-white font-medium">「本来の仕事」</span>に集中させる具体的メソッドを解説！
             </motion.p>
             
-            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4">
+            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4 items-start">
               <Button size="lg" className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-6 text-lg shadow-[0_0_20px_rgba(8,145,178,0.4)] transition-all hover:scale-105" onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}>
                 無料で参加する <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <div className="flex items-center gap-2 text-slate-400 text-sm px-4 py-2 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
-                <Clock className="h-4 w-4 text-cyan-400" />
-                <span>所要時間：60分</span>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-slate-300 text-base px-4 py-2 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
+                  <Clock className="h-5 w-5 text-cyan-400" />
+                  <span className="font-medium">2026年2月1日(木) 14:00～15:00</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-400 text-sm px-4 py-2 bg-slate-800/50 rounded-lg backdrop-blur-sm border border-slate-700">
+                  <span>オンライン開催（途中参加&退出OK）</span>
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -467,6 +476,38 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Instructor Section */}
+      <section className="py-20 bg-white">
+        <div className="container px-4 max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">登壇者</h2>
+          
+          <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl shadow-lg p-8 border border-slate-200">
+            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+              <div className="flex-shrink-0">
+                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+                  佐藤
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">佐藤 正徳</h3>
+                <p className="text-cyan-600 font-medium mb-4">AI活用コーディネーター</p>
+                <div className="text-slate-600 leading-relaxed space-y-3">
+                  <p>
+                    製造業の営業現場でのAI活用を専門とするコンサルタント。
+                    多数の製造業企業におけるAI導入支援の実績を持ち、
+                    特に営業プロセスの効率化と生産性向上において高い評価を得ている。
+                  </p>
+                  <p>
+                    「実務ですぐに使える」をモットーに、
+                    現場視点での具体的な活用方法をわかりやすく解説するスタイルが特徴。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Why Free Section */}
       <section className="py-20 bg-slate-900 text-white text-center">
         <div className="container px-4 max-w-3xl mx-auto">
@@ -508,7 +549,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">日時・所要時間</h3>
-                <p className="text-slate-600">平日開催（詳細は申込フォームにて）<br />約60分</p>
+                <p className="text-slate-600">2026年2月1日(木) 14:00～15:00<br />約60分</p>
               </div>
             </div>
             
