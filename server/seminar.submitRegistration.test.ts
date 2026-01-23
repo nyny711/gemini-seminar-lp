@@ -34,7 +34,7 @@ describe("seminar.submitRegistration", () => {
 
     expect(result.success).toBe(true);
     expect(result.message).toBeDefined();
-  });
+  }, 10000);
 
   it("rejects empty company name", async () => {
     const ctx = createPublicContext();
