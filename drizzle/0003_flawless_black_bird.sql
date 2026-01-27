@@ -1,0 +1,1 @@
+ALTER TABLE `seminar_registrations` DROP COLUMN `selectedSeminars`;

@@ -29,16 +29,14 @@ export const appRouter = router({
         email: z.string().email(),
         phone: z.string().min(1),
         challenge: z.string().optional(),
-        selectedSeminars: z.array(z.string()).min(1),
       }))
       .mutation(async ({ input }) => {
         try {
-          // セミナー情報のマッピング
-          const seminarInfo: Record<string, { title: string; date: string; time: string }> = {
-            vol1: { title: "VOL.1: 「商談時間」を最大化する", date: "2026年2月3日(火)", time: "14:00～15:00" },
-            vol2: { title: "VOL.2: 「売上」を最大化する", date: "2026年2月10日(火)", time: "14:00～15:00" },
-            vol3: { title: "VOL.3: 「売る」以外は、AIに任せる", date: "2026年2月17日(火)", time: "14:00～15:00" },
-            vol4: { title: "VOL.4: AIと働く、次世代の営業組織", date: "2026年2月24日(火)", time: "14:00～15:00" },
+          // セミナー情報
+          const seminarInfo = {
+            title: "「商談時間」を最大化する",
+            date: "2026年2月3日(火)",
+            time: "14:00～15:00"
           };
 
           // データベースに保存
@@ -49,17 +47,7 @@ export const appRouter = router({
             email: input.email,
             phone: input.phone,
             challenge: input.challenge || null,
-            selectedSeminars: JSON.stringify(input.selectedSeminars),
           });
-
-          // 選択されたセミナーの詳細を生成
-          const selectedSeminarDetails = input.selectedSeminars
-            .map(id => {
-              const info = seminarInfo[id];
-              return info ? `  - ${info.title}\n    ${info.date} ${info.time}` : '';
-            })
-            .filter(Boolean)
-            .join('\n');
 
           // 管理者向けメール送信
           const adminEmailText = `新しいセミナー登録がありました。
@@ -71,8 +59,9 @@ export const appRouter = router({
 電話番号: ${input.phone}
 課題: ${input.challenge || 'なし'}
 
-参加希望セミナー:
-${selectedSeminarDetails}`;
+参加セミナー:
+${seminarInfo.title}
+${seminarInfo.date} ${seminarInfo.time}`;
 
           const adminEmailHtml = `
 <html>
@@ -106,8 +95,11 @@ ${selectedSeminarDetails}`;
     </tr>
   </table>
 
-  <h3 style="color: #0891b2; margin-top: 30px;">参加希望セミナー</h3>
-  <div style="background-color: #f0f9ff; padding: 15px; border-left: 4px solid #0891b2; white-space: pre-line;">${selectedSeminarDetails}</div>
+  <h3 style="color: #0891b2; margin-top: 30px;">参加セミナー</h3>
+  <div style="background-color: #f0f9ff; padding: 15px; border-left: 4px solid #0891b2;">
+    <strong>${seminarInfo.title}</strong><br/>
+    ${seminarInfo.date} ${seminarInfo.time}
+  </div>
 </body>
 </html>`;
 
@@ -132,10 +124,11 @@ ${selectedSeminarDetails}`;
 メールアドレス: ${input.email}
 電話番号: ${input.phone}
 
-【参加希望セミナー】
-${selectedSeminarDetails}
+【参加セミナー】
+${seminarInfo.title}
+${seminarInfo.date} ${seminarInfo.time}
 
-セミナーの参加URL（Google Meetリンク）は、各セミナー開催日の前日までに、別途メールにてご連絡させていただきます。
+セミナーの参加URL（Google Meetリンク）は、開催日の前日までに、別途メールにてご連絡させていただきます。
 
 何かご不明な点がございましたら、お気軽にお問い合わせください。
 
@@ -188,13 +181,16 @@ Web: https://anyenv-inc.com
     </div>
     
     <div style="background-color: #ecfeff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0891b2;">
-      <h3 style="color: #0891b2; margin-top: 0;">参加希望セミナー</h3>
-      <div style="white-space: pre-line; line-height: 1.8;">${selectedSeminarDetails}</div>
+      <h3 style="color: #0891b2; margin-top: 0;">参加セミナー</h3>
+      <div style="line-height: 1.8;">
+        <strong>${seminarInfo.title}</strong><br/>
+        ${seminarInfo.date} ${seminarInfo.time}
+      </div>
     </div>
     
     <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
       <p style="margin: 0; font-weight: bold; color: #92400e;">⚠️ 重要なお知らせ</p>
-      <p style="margin: 10px 0 0 0; color: #92400e;">セミナーの参加URL（Google Meetリンク）は、各セミナー開催日の<strong>前日までに、別途メールにてご連絡</strong>させていただきます。</p>
+      <p style="margin: 10px 0 0 0; color: #92400e;">セミナーの参加URL（Google Meetリンク）は、開催日の<strong>前日までに、別途メールにてご連絡</strong>させていただきます。</p>
     </div>
     
     <p>何かご不明な点がございましたら、お気軽にお問い合わせください。</p>
