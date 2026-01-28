@@ -146,15 +146,10 @@ export default function Home() {
             </Badge>
             
             <div className="mb-8">
-              <p className="text-cyan-400 text-lg mb-4">製造業DXウェビナー 営業改革シリーズ</p>
-              <div className="flex justify-center mb-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-2xl">
-                  <div className="text-center">
-                    <div className="text-white font-bold text-sm">参加</div>
-                    <div className="text-white font-bold text-xl">無料</div>
-                  </div>
-                </div>
-              </div>
+              <p className="text-cyan-400 text-lg mb-2">製造業DXウェビナー 営業改革シリーズ</p>
+              <Badge className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-2 text-base">
+                参加無料
+              </Badge>
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -175,8 +170,8 @@ export default function Home() {
                 <div className="flex items-center justify-center gap-3 text-white">
                   <div className="text-4xl">🎁</div>
                   <div className="text-center">
-                    <div className="text-xl font-bold mb-1">参加特典</div>
-                    <div className="text-2xl font-extrabold">すぐに使える営業活用事例集を無料プレゼント！</div>
+                    <div className="text-xl font-bold">参加特典</div>
+                    <div className="text-2xl font-extrabold whitespace-nowrap">すぐに使える営業活用事例集を無料プレゼント！</div>
                   </div>
                   <div className="text-4xl">✨</div>
                 </div>
