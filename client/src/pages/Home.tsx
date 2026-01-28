@@ -146,14 +146,14 @@ export default function Home() {
             </Badge>
             
             <div className="mb-8">
-              <p className="text-cyan-400 text-lg mb-2">製造業DXウェビナー 営業改革シリーズ</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                <Badge className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-2 text-base">
-                  参加無料
-                </Badge>
-                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-2 text-base shadow-lg animate-pulse">
-                  🎁 特典：業界活用事例＆プロンプト集プレゼント
-                </Badge>
+              <p className="text-cyan-400 text-lg mb-4">製造業DXウェビナー 営業改革シリーズ</p>
+              <div className="flex justify-center mb-4">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-2xl">
+                  <div className="text-center">
+                    <div className="text-white font-bold text-sm">参加</div>
+                    <div className="text-white font-bold text-xl">無料</div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -168,6 +168,20 @@ export default function Home() {
               日報・見積・技術照会などの非コア業務をAIで自動化し、<br />
               営業マンを「本来の仕事」に集中させる具体的メソッドを解説！
             </p>
+
+            {/* 特典ボックス */}
+            <div className="mb-8 max-w-2xl mx-auto">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 shadow-2xl border-4 border-amber-300 animate-pulse">
+                <div className="flex items-center justify-center gap-3 text-white">
+                  <div className="text-4xl">🎁</div>
+                  <div className="text-center">
+                    <div className="text-xl font-bold mb-1">参加特典</div>
+                    <div className="text-2xl font-extrabold">すぐに使える営業活用事例集を無料プレゼント！</div>
+                  </div>
+                  <div className="text-4xl">✨</div>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
@@ -231,10 +245,9 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <div className="text-3xl">🎁</div>
                     <div>
-                      <h4 className="text-lg font-bold text-amber-900 mb-2">参加特典：無料プレゼント</h4>
-                      <p className="text-sm text-amber-800 leading-relaxed">
-                        セミナー参加者には、<strong>製造業に特化したAI活用事例集</strong>と<strong>実務で使えるプロンプト集</strong>を無料でプレゼント！<br />
-                        セミナー終了後、すぐに業務で活用できる内容です。
+                      <h4 className="text-lg font-bold text-amber-900 mb-2">参加特典</h4>
+                      <p className="text-base text-amber-800 leading-relaxed font-semibold">
+                        すぐに使える営業活用事例集を無料プレゼント！
                       </p>
                     </div>
                   </div>
