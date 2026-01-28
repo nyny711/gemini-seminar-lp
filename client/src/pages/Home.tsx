@@ -327,7 +327,7 @@ export default function Home() {
             >
               <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
                 <CardHeader className="bg-gradient-to-br from-cyan-50 to-blue-50 pb-8">
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 bg-cyan-600 text-white rounded-lg p-3">
                       <Search className="h-6 w-6" />
                     </div>
@@ -360,7 +360,7 @@ export default function Home() {
             >
               <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
                 <CardHeader className="bg-gradient-to-br from-blue-50 to-indigo-50 pb-8">
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 bg-blue-600 text-white rounded-lg p-3">
                       <FileText className="h-6 w-6" />
                     </div>
@@ -393,7 +393,7 @@ export default function Home() {
             >
               <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
                 <CardHeader className="bg-gradient-to-br from-indigo-50 to-purple-50 pb-8">
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 bg-indigo-600 text-white rounded-lg p-3">
                       <MessageSquare className="h-6 w-6" />
                     </div>
@@ -426,7 +426,7 @@ export default function Home() {
             >
               <Card className="border-2 border-slate-200 hover:border-cyan-500 transition-all shadow-sm hover:shadow-lg h-full">
                 <CardHeader className="bg-gradient-to-br from-purple-50 to-pink-50 pb-8">
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-4">
                     <div className="flex-shrink-0 bg-purple-600 text-white rounded-lg p-3">
                       <BrainCircuit className="h-6 w-6" />
                     </div>
