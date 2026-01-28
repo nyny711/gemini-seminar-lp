@@ -19,9 +19,9 @@ const seminar = {
   id: "vol1",
   title: "「商談時間」を最大化する",
   subtitle: "～非コア業務をAIで自動化し、顧客に向き合う～",
-  date: "2026年2月3日(火)",
+  date: "2026年2月17日(月)",
   time: "14:00～15:00",
-  image: "/seminar-vol1.png",
+  image: "/seminar-banner-0217.png",
   description: "日報・見積・技術照会...その事務作業、AIなら一瞬です。営業マンを「本来の仕事」に集中させる具体的メソッドを解説！"
 };
 
@@ -147,9 +147,14 @@ export default function Home() {
             
             <div className="mb-8">
               <p className="text-cyan-400 text-lg mb-2">製造業DXウェビナー 営業改革シリーズ</p>
-              <Badge className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-2 text-base">
-                参加無料
-              </Badge>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <Badge className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-2 text-base">
+                  参加無料
+                </Badge>
+                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-2 text-base shadow-lg animate-pulse">
+                  🎁 特典：業界活用事例＆プロンプト集プレゼント
+                </Badge>
+              </div>
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
@@ -195,11 +200,11 @@ export default function Home() {
 
           <div className="max-w-4xl mx-auto">
             <Card className="border-2 border-cyan-500 shadow-xl overflow-hidden">
-              <div className="relative h-64 md:h-80">
+              <div className="relative h-auto bg-white">
                 <img 
                   src={seminar.image} 
                   alt={seminar.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                 />
               </div>
               <CardContent className="p-8">
@@ -221,6 +226,18 @@ export default function Home() {
                     <strong className="text-cyan-700">開催形式:</strong> オンライン（Google Meet）<br />
                     <strong className="text-cyan-700">途中参加・途中退出:</strong> OK
                   </p>
+                </div>
+                <div className="mt-4 p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border-2 border-amber-300 shadow-md">
+                  <div className="flex items-start gap-3">
+                    <div className="text-3xl">🎁</div>
+                    <div>
+                      <h4 className="text-lg font-bold text-amber-900 mb-2">参加特典：無料プレゼント</h4>
+                      <p className="text-sm text-amber-800 leading-relaxed">
+                        セミナー参加者には、<strong>製造業に特化したAI活用事例集</strong>と<strong>実務で使えるプロンプト集</strong>を無料でプレゼント！<br />
+                        セミナー終了後、すぐに業務で活用できる内容です。
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
