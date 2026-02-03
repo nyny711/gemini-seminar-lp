@@ -146,7 +146,12 @@ export default function Home() {
             </Badge>
             
             <div className="mb-8">
-              <p className="text-cyan-400 text-lg mb-2">製造業DXウェビナー 営業改革シリーズ</p>
+              <div className="mb-3">
+                <p className="text-cyan-300 text-xl md:text-2xl font-bold mb-1">製造業DXウェビナー</p>
+                <p className="text-white text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                  Google Geminiを活用した営業改革シリーズ
+                </p>
+              </div>
               <Badge className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-6 py-2 text-base">
                 参加無料
               </Badge>
@@ -211,8 +216,8 @@ export default function Home() {
             <Card className="border-2 border-cyan-500 shadow-xl overflow-hidden">
               <div className="relative h-auto bg-white">
                 <img 
-                  src={seminar.image} 
-                  alt={seminar.title}
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663298360413/hdeHGBsnUfEeCJJf.png" 
+                  alt="製造業DXウェビナー Google Geminiを活用した営業改革シリーズ"
                   className="w-full h-auto object-contain"
                 />
               </div>
